@@ -1,3 +1,23 @@
-@for(exam of catalog?.exams; track exam.id){
+<!-- @for(exam of catalog?.exams; track exam.id){
 <h2>{{ exam.title }}</h2>
-}
+} -->
+
+<div class="text-center py-4" style="background-color: #1a1e24;">
+    <div class="mb-2">
+        <span style="font-size: 4rem;">🐧🎓</span>
+    </div>
+    <h2 class="fw-bold text-white mb-0">AZB-LePruSim</h2>
+    <small style="color: #a0a5b0;">Lern- und Prüf-Simulator</small>
+</div>
+
+<nav class="navbar navbar-expand navbar-dark" style="background-color: #252b36; border-top: 1px solid #333; border-bottom: 1px solid #333";>
+    <div class="container-fluid justify-content-center">
+        <ul class="navbar-nav text-center flex-wrap">
+            <li class="nav-item"><a class="nav-link text-white fw-bold px-3" routerLink="/">START</a></li>
+            <li class="nav-item"><a class="nav-link text-white fw-bold px-3" routerLink="/catalog">KATALOGE</a></li>
+            <li class="nav-item"><a class="nav-link text-white fw-bold px-3" routerLink="/simulation">SIMULATION</a></li>
+        </ul>
+    </div>
+</nav>
+
+<router-outlet> </router-outlet>

@@ -5,7 +5,7 @@ import { CatalogInfo } from './data/catalog-info';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
