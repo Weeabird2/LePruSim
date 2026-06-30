@@ -59,6 +59,16 @@
           "title": "lpic102g"
         }
       ]
+    },
+    {
+      "id": "lpic103",
+      "title": "LPIC103",
+      "topics": [
+        {
+          "id": "lpic103a",
+          "title": "lpic103a"
+        }
+      ]
     }
   ]
 }
