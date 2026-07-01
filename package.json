@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate-catalogs": "node scripts/generate-catalogs.js"
+    "generate-catalogs": "node scripts/generate-catalogs.js",
+    "api": "node scripts/api-server.js",
+    "dev": "concurrently \"npm start\" \"npm run api\""
   },
   "private": true,
   "packageManager": "npm@11.13.0",
@@ -19,6 +21,9 @@
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
     "bootstrap": "^5.3.8",
+    "concurrently": "^10.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

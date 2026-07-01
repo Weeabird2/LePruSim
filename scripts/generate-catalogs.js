@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const questionsDir = path.join(__dirname, '../public/assets/questions');
-const outputFile = path.join(__dirname, '../public/assets/catalogs.json');
+const questionsDir = path.join(__dirname, 'assets/questions');
+const outputFile = path.join(__dirname, 'assets/catalogs.json');
 
 const exams = [];
 

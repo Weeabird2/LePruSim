@@ -1,0 +1,74 @@
+{
+  "exams": [
+    {
+      "id": "lpic101",
+      "title": "LPIC101",
+      "topics": [
+        {
+          "id": "lpic101a",
+          "title": "lpic101a"
+        },
+        {
+          "id": "lpic101b",
+          "title": "lpic101b"
+        },
+        {
+          "id": "lpic101c",
+          "title": "lpic101c"
+        },
+        {
+          "id": "lpic101d",
+          "title": "lpic101d"
+        },
+        {
+          "id": "lpic101e",
+          "title": "lpic101e"
+        }
+      ]
+    },
+    {
+      "id": "lpic102",
+      "title": "LPIC102",
+      "topics": [
+        {
+          "id": "lpic102a",
+          "title": "lpic102a"
+        },
+        {
+          "id": "lpic102b",
+          "title": "lpic102b"
+        },
+        {
+          "id": "lpic102c",
+          "title": "lpic102c"
+        },
+        {
+          "id": "lpic102d",
+          "title": "lpic102d"
+        },
+        {
+          "id": "lpic102e",
+          "title": "lpic102e"
+        },
+        {
+          "id": "lpic102f",
+          "title": "lpic102f"
+        },
+        {
+          "id": "lpic102g",
+          "title": "lpic102g"
+        }
+      ]
+    },
+    {
+      "id": "lpic103",
+      "title": "LPIC103",
+      "topics": [
+        {
+          "id": "lpic103a",
+          "title": "lpic103a"
+        }
+      ]
+    }
+  ]
+}
