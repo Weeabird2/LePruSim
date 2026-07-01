@@ -4,3 +4,8 @@ body {
   background-color: #1a1e24 !important;
   color: white !important;
 }
+
+::placeholder {
+  color: #a0a5b0 !important;
+  opacity: 1; 
+}
