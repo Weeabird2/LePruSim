@@ -1,3 +1,10 @@
 @let catalog = catalogService.catalog(); @for(exam of catalog?.exams; track exam.id){
-<h2>{{ exam.title }}</h2>
+<div>
+  <h2>{{ exam.title }}</h2>
+  <div>
+    @for (topic of exam.topics; track topic.id){
+    <h3>{{ topic.title }}</h3>
+    }
+  </div>
+</div>
 }
