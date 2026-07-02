@@ -1,14 +1,25 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, shareReplay, tap } from 'rxjs';
 import { Question } from '../data/question';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Questions {
+  private load$?: Observable<Question[]>;
+  question = signal<Question[]>([]);
   constructor(private http: HttpClient) {}
+
   getQuestions(examId: string, topicId: string): Observable<Question[]> {
-    return this.http.get<Question[]>(`http:localhost:3000/api/questions/:examId/:topicId`);
+    if (!this.load$) {
+      this.load$ = this.http
+        .get<Question[]>(`http://localhost:3000/api/questions/${examId}/${topicId}`)
+        .pipe(
+          tap((data) => this.question.set(data)),
+          shareReplay(1),
+        );
+    }
+    return this.load$;
   }
 }

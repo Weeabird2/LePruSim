@@ -8,5 +8,5 @@ export const routes: Routes = [
   { path: '', component: Home },
   { path: 'question-page', component: QuestionPageComponent },
   { path: 'question-catalog', component: QuestionCatalog },
-  { path: 'question-details', component: QuestionDetails}
+  { path: 'question-details/:examId/:topicId', component: QuestionDetails },
 ];

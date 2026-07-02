@@ -9,6 +9,4 @@ import { Observable } from 'rxjs';
 })
 export class QuestionPageComponent {
   currentQuestion?: Observable<Question>;
-
-  };
 }

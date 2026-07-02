@@ -15,7 +15,7 @@
           <button
             class="btn btn-sm text-white fw-bold"
             style="background-color: #607d9c"
-            routerLink="/question-details"
+            [routerLink]="['/question-details', exam.id, topic.id]"
           >
             Details
           </button>
