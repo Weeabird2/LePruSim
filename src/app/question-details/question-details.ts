@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Questions } from '../service/questions';
 import { Question } from '../data/question';
@@ -10,7 +10,7 @@ import { Question } from '../data/question';
   styleUrl: './question-details.css',
 })
 export class QuestionDetails {
-  questions: Question[] = [];
+  questions = signal<Question[]>([]);
   examId = '';
   topicId = '';
 
@@ -19,20 +19,22 @@ export class QuestionDetails {
     public questionService: Questions,
   ) {}
   ngOnInit(): void {
-    this.examId = this.route.snapshot.paramMap.get('examId') ?? '';
+    this.route.paramMap.subscribe((params) => {
+      this.examId = params.get('examId') ?? '';
 
-    this.topicId = this.route.snapshot.paramMap.get('topicId') ?? '';
-    console.log(this.examId);
-    console.log(this.topicId);
+      this.topicId = params.get('topicId') ?? '';
+      console.log(this.examId);
+      console.log(this.topicId);
 
-    this.questionService.getQuestions(this.examId, this.topicId).subscribe({
-      next: (questions) => {
-        console.log(questions);
-        this.questions = questions;
-      },
-      error: (err) => {
-        console.error('Fragen können nicht geladen werden:', err);
-      },
+      this.questionService.getQuestions(this.examId, this.topicId).subscribe({
+        next: (questions) => {
+          console.log(questions);
+          this.questions.set(questions);
+        },
+        error: (err) => {
+          console.error('Fragen können nicht geladen werden:', err);
+        },
+      });
     });
   }
 }
