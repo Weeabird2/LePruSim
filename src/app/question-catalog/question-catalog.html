@@ -1,10 +1,36 @@
-@let catalog = catalogService.catalog(); @for(exam of catalog?.exams; track exam.id){
-<div>
-  <h2>{{ exam.title }}</h2>
-  <div>
-    @for (topic of exam.topics; track topic.id){
-    <h3>{{ topic.title }}</h3>
+@let catalog = catalogService.catalog();
+<div class="catalog-container">
+  @for(exam of catalog?.exams; track exam.id){
+  <div class="exam-block">
+    <button class="exam-button" type="button" (click)="toggleExam(exam.id)">
+      <span>{{ exam.title }}</span>
+      <span>{{ openExamId === exam.id ? '▲' : '▼'}}</span>
+    </button>
+    @if (openExamId === exam.id){
+    <div class="topic-list">
+      @for (topic of exam.topics; track topic.id){
+      <div class="topic-row">
+        <span>{{ topic.title }}</span>
+        <div class="topic-actions">
+          <button
+            class="btn btn-sm text-white fw-bold"
+            style="background-color: #607d9c"
+            routerLink="/question-details"
+          >
+            Details
+          </button>
+          <button
+            class="btn btn-sm text-white fw-bold"
+            style="background-color: #607d9c"
+            routerLink="/question-page"
+          >
+            Questions
+          </button>
+        </div>
+      </div>
+      }
+    </div>
     }
   </div>
+  }
 </div>
-}
