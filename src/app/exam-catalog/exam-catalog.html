@@ -1,15 +1,28 @@
 @let catalog = catalogService.catalog();
-<div class="catalog-container">
-  @for(exam of catalog?.exams; track exam.id){
-  <div class="exam-block">
-    <span>{{ exam.title }}</span>
-    <button
-      class="btn btn-sm text-white fw-bold"
-      style="background-color: #607d9c"
-      [routerLink]="['/question-page']"
-    >
-      Questions
-    </button>
+
+<div class="container mt-5 text-white">
+  <h2 class="fw-bold mb-4">Prüfungssimulation starten</h2>
+
+  <div class="row">
+    @for(exam of catalog?.exams; track exam.id){
+    <div class="col-md-6 mb-4">
+      <div class="card shadow p-4 d-flex flex-row justify-content-between align-items-center" 
+           style="background-color: #252b36; border: none; border-radius: 10px;">
+        
+        <div>
+          <h4 class="text-white fw-bold m-0">{{ exam.title }}</h4>
+          <small class="text-muted">ID: {{ exam.id }}</small>
+        </div>
+
+        <button 
+          class="btn text-white fw-bold px-4 py-2 shadow-sm" 
+          style="background-color: #607d9c;"
+          [routerLink]="['/exam-simulation', exam.id]">
+          PRÜFUNG STARTEN
+        </button>
+
+      </div>
+    </div>
+    }
   </div>
-  }
 </div>

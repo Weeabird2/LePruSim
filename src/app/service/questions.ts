@@ -10,9 +10,19 @@ export class Questions {
   question = signal<Question[]>([]);
   constructor(private http: HttpClient) {}
 
-  getQuestions(examId: string, topicId: string): Observable<Question[]> {
+  // getQuestions(examId: string, topicId: string): Observable<Question[]> {
+  //   return this.http
+  //     .get<Question[]>(`http://localhost:3000/api/questions/${examId}/${topicId}`)
+  //     .pipe(tap((data) => this.question.set(data)));
+  // }
+
+  getQuestions(examId: string, topicId?: string): Observable<Question[]> {
+    const url = topicId
+    ? `http://localhost:3000/api/questions/${examId}/${topicId}`
+    : `http://localhost:3000/api/questions/${examId}`;
+
     return this.http
-      .get<Question[]>(`http://localhost:3000/api/questions/${examId}/${topicId}`)
-      .pipe(tap((data) => this.question.set(data)));
+      .get<Question[]>(url)
+      .pipe(tap((data) => this.question.set(data)))
   }
 }

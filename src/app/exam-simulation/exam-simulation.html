@@ -1,0 +1,66 @@
+@if (!isFinished()) {
+  @if(currentQuestion(); as q) {
+  <div class="container mt-5 text-white">
+    <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded shadow" style="background-color: #252b36;">
+      <h4 class="m-0 fw-bold text-warning">⏱ {{ formatTime() }}</h4>
+      <h5 class="m-0 fw-bold">Frage {{ currentIndex() + 1 }} von {{ questions().length }}</h5>
+      <button (click)="finishExam()" class="btn btn-danger fw-bold px-4 py-2">ABGEBEN</button>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card shadow p-4 mb-4" style="background-color: #252b36; border: none; border-radius: 10px">
+          <h4 class="mb-4 text-white fw-bold">{{ q.questionText }}</h4>
+
+          @if (q.type === 'sc'){
+          <div class="d-flex flex-column gap-3">
+            @for (answer of q.answers; track answer.id){
+            <label class="btn btn-outline-light text-start p-3 fw-bold" [class.active]="userAnswers()[q.id]?.includes(answer.id)">
+              <input type="radio" name="examRadio" class="me-3" [checked]="userAnswers()[q.id]?.includes(answer.id)" (change)="onSelect(q.id, answer.id, true)" />
+              {{ answer.answerText }}
+            </label>
+            }
+          </div>
+          }
+
+          @if (q.type === 'mc'){
+          <div class="d-flex flex-column gap-3">
+            @for (answer of q.answers; track answer.id){
+            <label class="btn btn-outline-light text-start p-3 fw-bold" [class.active]="userAnswers()[q.id]?.includes(answer.id)">
+              <input type="checkbox" class="me-3" [checked]="userAnswers()[q.id]?.includes(answer.id)" (change)="onSelect(q.id, answer.id, false)" />
+              {{ answer.answerText }}
+            </label>
+            }
+          </div>
+          }
+
+          @if (q.type === 'fi'){
+          <input type="text" class="form-control form-control-lg text-white" style="background-color: #1a1e24; border: 1px solid #607d9c" placeholder="Befehl eingeben..." [value]="userAnswers()[q.id]?.[0] || ''" (input)="onTextInput(q.id, $event)" />
+          }
+
+          <div class="mt-5 d-flex justify-content-between">
+            <button (click)="prev()" class="btn btn-secondary fw-bold px-4" [disabled]="currentIndex() === 0">ZURÜCK</button>
+            <button (click)="next()" class="btn text-white fw-bold px-4" style="background-color: #607d9c" [disabled]="currentIndex() === questions().length - 1">WEITER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  } @else {
+    <div class="container mt-5 text-white"><h4>Lade Prüfung...</h4></div>
+  }
+} @else {
+  <div class="container mt-5 text-white text-center">
+    <div class="card shadow p-5 mx-auto" style="background-color: #252b36; border: none; border-radius: 10px; max-width: 600px;">
+      <h2 class="fw-bold mb-4">Prüfung Beendet</h2>
+      <h1 class="display-1 fw-bold" [class.text-success]="score() >= 50" [class.text-danger]="score() < 50">
+        {{ score() }}%
+      </h1>
+      <h3 class="mt-3 mb-5" [class.text-success]="score() >= 50" [class.text-danger]="score() < 50">
+        {{ score() >= 50 ? 'BESTANDEN! 🎉' : 'DURCHGEFALLEN! ❌' }}
+      </h3>
+      <p class="text-muted">Du benötigst 50%, um zu bestehen.</p>
+      <button onclick="window.location.reload()" class="btn btn-outline-light fw-bold px-5 py-3 mt-3">NEUSTART</button>
+    </div>
+  </div>
+}

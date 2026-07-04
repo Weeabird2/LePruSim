@@ -91,6 +91,27 @@ export class QuestionPageComponent implements OnInit {
     this.showSolution.set(true);
   }
 
+  flagged = signal<number[]>([]);
+
+  toggleFlag(){
+    const qId = this.currentQuestion()?.id;
+    if(!qId) return;
+    const current = [...this.flagged()];
+    if(current.includes(qId)) {
+      this.flagged.set(current.filter((id) => id !== qId));
+    } else {
+      this.flagged.set([...current, qId]);
+    }
+  }
+  
+  goTo(index: number){
+    this.currentIndex.set(index);
+    this.selectedAnswerId.set([]);
+    this.textAnswer.set('');
+    this.feedback.set(null);
+    this.showSolution.set(false);
+  }
+
   next() {
     this.selectedAnswerId.set([]);
     this.textAnswer.set('');

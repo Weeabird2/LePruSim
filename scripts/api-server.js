@@ -3,6 +3,7 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { error } = require('console');
 
 const app = express();
 const port = 3000;
@@ -39,6 +40,27 @@ app.get('/api/questions/:examId/:topicId', (req, res) => {
 
   const questions = JSON.parse(fs.readFileSync(questionFile, 'utf8'));
   res.json(questions);
+});
+
+app.get('/api/questions/:examId', (req, res) => {
+  const { examId } = req.params;
+  const examDir = path.join(questionsDir, examId);
+  if(!fs.existsSync(examDir)) {
+    return res.status(404).json({ error: 'Exam not found', examId});
+  }
+
+  let allQuestions = [];
+  const files = fs.readdirSync(examDir);
+
+  files.forEach(file => {
+    if(file.endsWith('.json')) {
+      const filePath = path.join(examDir, file);
+      const questions = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      allQuestions = allQuestions.concat(questions);
+    }
+  });
+
+  res.json(allQuestions);
 });
 
 app.listen(port, () => {
