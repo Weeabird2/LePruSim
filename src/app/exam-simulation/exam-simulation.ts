@@ -13,7 +13,7 @@ export class ExamSimulation {
   currentIndex = signal(0);
   currentQuestion = computed(() => this.questions()[this.currentIndex()]);
 
-  userAnswers = signal<Record<number,(number | string)[]>>({});
+  userAnswers = signal<Record<number, (number | string)[]>>({});
   isFinished = signal(false);
   score = signal(0);
 
@@ -22,30 +22,33 @@ export class ExamSimulation {
   examId = '';
   topicId = '';
 
-  constructor(private route: ActivatedRoute, public questionService: Questions) {}
+  constructor(
+    private route: ActivatedRoute,
+    public questionService: Questions,
+  ) {}
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.examId = params.get('examId') ?? '';
       this.topicId = params.get('topicId') ?? '';
       this.questionService.getQuestions(this.examId, this.topicId).subscribe({
         next: (q) => {
-          const random60 = q.sort(() => 0.5 -Math.random()).slice(0, 60);
-          this.questions.set(random60)
+          const random60 = q.sort(() => 0.5 - Math.random()).slice(0, 60);
+          this.questions.set(random60);
         },
-        error: (err) => console.error('Fehler',err)
+        error: (err) => console.error('Fehler', err),
       });
     });
     this.startTimer();
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.timerInterval)
+    clearInterval(this.timerInterval);
   }
 
-  startTimer(){
+  startTimer() {
     this.timerInterval = setInterval(() => {
-      if(this.timeLeft() > 0 && !this.isFinished()) {
+      if (this.timeLeft() > 0 && !this.isFinished()) {
         this.timeLeft.set(this.timeLeft() - 1);
       } else if (this.timeLeft() === 0 && !this.isFinished()) {
         this.finishExam();
@@ -59,13 +62,13 @@ export class ExamSimulation {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   }
 
-  onSelect(questionId: number, answerId: number, isRadio: boolean){
-    const current = {...this.userAnswers() };
-    if(isRadio){
+  onSelect(questionId: number, answerId: number, isRadio: boolean) {
+    const current = { ...this.userAnswers() };
+    if (isRadio) {
       current[questionId] = [answerId];
     } else {
       const selected = (current[questionId] as number[]) || [];
-      if(selected.includes(answerId)){
+      if (selected.includes(answerId)) {
         current[questionId] = selected.filter((id) => id !== answerId);
       } else {
         current[questionId] = [...selected, answerId];
@@ -74,44 +77,50 @@ export class ExamSimulation {
     this.userAnswers.set(current);
   }
 
-  onTextInput(questionId: number, event: Event){
+  onTextInput(questionId: number, event: Event) {
     const val = (event.target as HTMLInputElement).value;
-    const current = {...this.userAnswers()};
+    const current = { ...this.userAnswers() };
     current[questionId] = [val];
     this.userAnswers.set(current);
   }
 
-  next(){
-    if(this.currentIndex() < this.questions().length - 1) {
-        this.currentIndex.set(this.currentIndex() + 1);
-      }
+  next() {
+    if (this.currentIndex() < this.questions().length - 1) {
+      this.currentIndex.set(this.currentIndex() + 1);
     }
-  
+  }
+
   prev() {
-    if(this.currentIndex() > 0){
+    if (this.currentIndex() > 0) {
       this.currentIndex.set(this.currentIndex() - 1);
     }
   }
 
-  finishExam(){
+  finishExam() {
     clearInterval(this.timerInterval);
     this.isFinished.set(true);
     let correctCount = 0;
 
     this.questions().forEach((q) => {
       const userAns = this.userAnswers()[q.id] || [];
-      if(q.type === 'sc' || q.type === 'mc'){
-        const correctIds = q.answers.filter((a) => a.isCorrect).map((a) => a.id).sort();
+      if (q.type === 'sc' || q.type === 'mc') {
+        const correctIds = q.answers
+          .filter((a) => a.isCorrect)
+          .map((a) => a.id)
+          .sort();
         const selectedIds = (userAns as number[]).sort();
-        if(JSON.stringify(correctIds) === JSON.stringify(selectedIds)) correctCount++;
-      } else if (q.type === 'fi'){
-          const correctText = q.answers.find((a) => a.isCorrect)?.answerText.toLowerCase().trim() || '';
-          const userText = ((userAns[0] as string) || '').toLowerCase().trim();
-          if(correctText === userText) correctCount++;
-        }
-      });
+        if (JSON.stringify(correctIds) === JSON.stringify(selectedIds)) correctCount++;
+      } else if (q.type === 'fi') {
+        const correctText =
+          q.answers
+            .find((a) => a.isCorrect)
+            ?.answerText.toLowerCase()
+            .trim() || '';
+        const userText = ((userAns[0] as string) || '').toLowerCase().trim();
+        if (correctText === userText) correctCount++;
+      }
+    });
 
-      this.score.set(Math.round((correctCount / this.questions().length) * 100));
-
-    }
+    this.score.set(Math.round((correctCount / this.questions().length) * 100));
   }
+}
