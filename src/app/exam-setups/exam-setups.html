@@ -1,0 +1,50 @@
+<div class="container mt-5 text-white">
+    <div class="card shadow p-4 mx-auto" style="background-color: #252b36; border: none; border-radius: 10px; max-width: 600px;">
+        <h3 class="mb-4 text-center fw-bold text-white">
+            {{mode === 'random' ? 'RANDOM MODUS' : 'PRÜFUNGSMODUS'}}
+        </h3>
+
+        @if(mode === 'random'){
+            <div class="mb-4">
+                <label class="form-label fw-bold">Katalog auswählen</label>
+                <select class="form-select form-select-lg text-white" style="background-color: #1a1e24; border: 1px solid #607d9c" [(ngModel)]="selectedCatalog">
+                    @for (catalog of catalogs; track catalog.id) {
+                        <option [value]="catalog.id" style="color: white; background-color: #1a1e24;">{{ catalog.name }}</option> }
+                </select>
+            </div>
+        } @else {
+            <div class="mb-4">
+                <label class="form-label fw-bold text-white">Unterthemen auswählen</label>
+                <select class="form-select form-select-lg text-white"
+                        style="background-color: #1a1e24; border: 1px solid #607d9c" [(ngModel)]="selectedTopic">
+                    @for (topic of topics; track topic.id) {
+                        <option [value]="topic.id" style="color: white; background-color: #1a1e24;">{{ topic.name }}</option> }
+                </select>
+            </div>
+        }
+
+        <div class="mb-4">
+            <label class="form-label fw-bold text-white">Anzahl der Fragen</label>
+            <input  type="number"
+                    class="form-control form-control-lg text-white"
+                    style="background-color: #1a1e24; border: 1px solid #607d9c"
+                    [ngModel]="questionCount()"
+                    (ngModelChange)="updateTimer($event)"
+                    min="1">
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold text-white">Zeitlimit (Minuten)</label>
+            <input  type="number"
+                    class="form-control form-control-lg text-white"
+                    style="background-color: #1a1e24; border: 1px solid #607d9c"
+                    [ngModel]="timeLimit()"
+                    (ngModelChange)="updateTimer($event)"
+                    min="1">
+        </div>
+
+        <button class="btn btn-warning w-100 fw-bold py-2 mt-3" (click)="startExam()">
+            SIMULATION STARTEN
+        </button>
+    </div>
+</div>

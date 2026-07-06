@@ -1,0 +1,60 @@
+@if(question(); as q){
+    <div class="container mt-5 text-white">
+        <button class="btn btn-outline-light mb-4 fw-bold" (click)="goBack()">⬅ ZURÜCK</button>
+
+        <div class="card shadow p-4 mx-auto" style="background-color: #252b36; border: none; border-radius: 10px; max-width: 800px;">
+            <h4 class="mb-4 text-white fw-bold">{{ q.questionText }}</h4>
+
+            @if(q.type === 'sc'){
+                <div class="d-flex flex-column gap-3">
+                    @for(answer of q.answers; track answer.id){
+                        <label class="btn btn-outline-light text-start p-3 fw-bold" [class.bg-success]="showSolution() && answer.isCorrect" [class.text-white]="showSolution() && answer.isCorrect">
+                            <input type="radio" name="scGroup"class="me-3" [checked]="selectedAnswerId().includes(answer.id)" (change)="onSelect(answer.id, true)" />
+                            {{ answer.answerText }}
+                        </label>
+                    }
+                </div>
+            }
+
+            @if (q.type === 'mc'){
+                <div class="d-flex flex-column gap-3">
+                    @for(answer of q.answers; track answer.id){
+                        <label class="btn btn-outline-light text-start p-3 fw-bold" [class.bg-success]="showSolution() && answer.isCorrect" [class.text-white]="showSolution() && answer.isCorrect">
+                            <input type="checkbox" class="me-3" [checked]="selectedAnswerId().includes(answer.id)" (change)="onSelect(answer.id, false)" />
+                            {{ answer.answerText }}
+                        </label>
+                    }
+                </div>
+            }
+
+            @if(q.type === 'fi'){
+                <input type="text" class="form-control form-control-lg text-white" style="background-color: #1a1e24; border: 1px solid #607d9c" placeholder="Tippe deinen Befehl hier ein..." [value]="textAnswer()" (input)="onTextInput($event)" />
+                @if(showSolution()){
+                    <div class="mt-3 text-success fw-bold">
+                        Lösung: 
+                        @for (answer of q.answers; track answer.id){
+                            @if (answer.isCorrect){ 
+                                <span class="badge bg-success text-white me-2">{{ answer.answerText }} </span> 
+                            } 
+                        }
+                    </div>
+                }
+            }
+
+            @if(feedback()){
+                <div class="mt-4 p-3 rounded fw-bold text-center text-white" [class.bg-success]="feedback() === 'Richtig! ✅'" [class.bg-danger]="feedback() === 'Falsch! ❌'">
+                    {{ feedback() }}
+                </div>
+            }
+
+            <div class="mt-5 d-flex justify-content-end gap-3">
+                <button (click)="revealSolution()" class="btn btn-info fw-bold px-4 py-2 text-white">LÖSUNG</button>
+                <button (click)="check()" class="btn btn-warning fw-bold px-4 py-2">PRÜFEN</button>
+            </div>
+        </div>
+    </div>
+} @else{
+    <div class="container mt-5 text-white">
+        <h4>Lade Frage...</h4>
+    </div>
+}

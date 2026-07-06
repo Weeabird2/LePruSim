@@ -37,7 +37,11 @@
           <p class="card-text mb-4" style="color: #a0a5b0">
             Zufällige Fragen aus allen verfügbaren Katalogen
           </p>
-          <button class="btn mt-auto text-white fw-bold" style="background-color: #607d9c">
+          <button
+            [routerLink]="['/exam-setups']"
+            [queryParams]="{ mode: 'random' }"
+            class="btn mt-auto text-white fw-bold" 
+            style="background-color: #607d9c">
             STARTEN
           </button>
         </div>
@@ -56,10 +60,10 @@
             Vollständige Simulation einer LPIC-Prüfung
           </p>
           <button
+            [routerLink]="['/exam-setups']"
+            [queryParams]="{ mode: 'exam' }"
             class="btn mt-auto text-white fw-bold"
-            style="background-color: #607d9c"
-            routerLink="/exam-catalog"
-          >
+            style="background-color: #607d9c">
             PRÜFUNG WÄHLEN
           </button>
         </div>

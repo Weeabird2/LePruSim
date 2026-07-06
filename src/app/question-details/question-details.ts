@@ -1,11 +1,11 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Questions } from '../service/questions';
 import { Question } from '../data/question';
 
 @Component({
   selector: 'app-question-details',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './question-details.html',
   styleUrl: './question-details.css',
 })
