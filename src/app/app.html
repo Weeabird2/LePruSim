@@ -13,9 +13,14 @@
 >
   <div class="container-fluid justify-content-center">
     <ul class="navbar-nav text-center flex-wrap">
-      <li class="nav-item"><a class="nav-link text-white fw-bold px-3" routerLink="/">START</a></li>
+      <li class="nav-item">
+        <a class="nav-link text-white fw-bold px-3" routerLink="/">START</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link text-white fw-bold px-3" routerLink="/question-catalog">KATALOGE</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white fw-bold px-3" routerLink="/exam-setups" [queryParams]="{ mode: 'random' }">RANDOM</a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-white fw-bold px-3" routerLink="/exam-catalog">SIMULATION</a>

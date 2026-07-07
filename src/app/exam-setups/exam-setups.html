@@ -5,7 +5,7 @@
         </h3>
 
         @if(mode === 'random'){
-            <div class="mb-4">
+            <div class="mb-4 text-white">
                 <label class="form-label fw-bold">Katalog auswählen</label>
                 <select class="form-select form-select-lg text-white" style="background-color: #1a1e24; border: 1px solid #607d9c" [(ngModel)]="selectedCatalog">
                     @for (catalog of catalogs; track catalog.id) {
@@ -13,7 +13,7 @@
                 </select>
             </div>
         } @else {
-            <div class="mb-4">
+            <div class="mb-4 text-white">
                 <label class="form-label fw-bold text-white">Unterthemen auswählen</label>
                 <select class="form-select form-select-lg text-white"
                         style="background-color: #1a1e24; border: 1px solid #607d9c" [(ngModel)]="selectedTopic">

@@ -54,12 +54,16 @@ export class ExamSetups implements OnInit {
   }
 
   startExam() {
-    const selectionId = this.mode === 'exam' ? this.selectedCatalog() : this.selectedTopic();
+    const isRandom = this.mode === 'random';
+    const selectionId = isRandom ? this.selectedCatalog(): this.selectedTopic();
+    const finalCount = isRandom ? this.questionCount() : 60;
+    const finalTime = isRandom ? this.timeLimit() : 60;
+    const targetRoute = isRandom ? '/random-simulation': '/exam-simulation';
 
-    this.router.navigate(['/exam-simulation', selectionId], {
+    this.router.navigate([targetRoute, selectionId], {
       queryParams: {
-        count: this.questionCount(),
-        time: this.timeLimit()
+        count: finalCount,
+        time: finalTime
       }
     });
   }

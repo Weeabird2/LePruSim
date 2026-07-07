@@ -1,0 +1,73 @@
+<div class="container text-white mt-4">
+  @if(!isFinished()) {
+    <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded" style="background-color: #1a1e24; border: 1px solid #3a4252;">
+      <h5 class="m-0 fw-bold">Frage {{ currentIndex() + 1 }} von {{ questions().length }}</h5>
+      <h5 class="m-0 fw-bold" style="color: #f59e0b;">⏱ {{ formatTime() }}</h5>
+    </div>
+
+    @if(currentQuestion(); as q) {
+      <div class="card p-4 shadow mb-4" style="background-color: #252b36; border: none; border-radius: 10px;">
+        <h4 class="mb-4 lh-base fw-bold text-white">{{ q.questionText }}</h4>
+
+        <div class="d-flex flex-column gap-3">
+          @if(q.type === 'sc' || q.type === 'mc') {
+            @for(ans of q.answers; track ans.id) {
+              <label class="d-flex align-items-center p-3 rounded" 
+                     style="background-color: #1a1e24; border: 1px solid #607d9c; cursor: pointer;">
+                <input class="form-check-input mt-0 me-3" 
+                       [type]="q.type === 'sc' ? 'radio' : 'checkbox'" 
+                       [name]="'question_' + q.id"
+                       [checked]="userAnswers()[q.id]?.includes(ans.id)"
+                       (change)="onSelect(q.id, ans.id, q.type === 'sc')">
+                <span class="fs-5 text-white">{{ ans.answerText }}</span>
+              </label>
+            }
+          }
+
+          @if(q.type === 'fi') {
+            <input type="text" 
+                   class="form-control form-control-lg text-white" 
+                   style="background-color: #1a1e24; border: 1px solid #607d9c;"
+                   [value]="userAnswers()[q.id]?.[0] || ''"
+                   (input)="onTextInput(q.id, $event)"
+                   placeholder="Deine Antwort hier eingeben...">
+          }
+        </div>
+      </div>
+    }
+
+    <div class="d-flex justify-content-between mt-4 mb-5">
+      <button class="btn btn-outline-secondary btn-lg fw-bold px-4 text-white" 
+              [disabled]="currentIndex() === 0" 
+              (click)="prev()">
+        ZURÜCK
+      </button>
+
+      @if(currentIndex() < questions().length - 1) {
+        <button class="btn btn-lg fw-bold px-5 text-white" 
+                style="background-color: #607d9c;" 
+                (click)="next()">
+          WEITER
+        </button>
+      } @else {
+        <button class="btn btn-warning btn-lg fw-bold px-5 text-dark" 
+                (click)="finishExam()">
+          PRÜFUNG BEENDEN
+        </button>
+      }
+    </div>
+  } @else {
+    <div class="card p-5 text-center shadow mx-auto mt-5" style="background-color: #252b36; border: none; border-radius: 10px; max-width: 500px;">
+      <h2 class="mb-4 fw-bold">Simulation Beendet!</h2>
+      <div class="display-1 fw-bold mb-4" [style.color]="score() >= 65 ? '#4ade80' : '#f87171'">
+        {{ score() }}%
+      </div>
+      <h4 class="mb-5 text-light">
+        {{ score() >= 65 ? 'Super! Du hättest bestanden.' : 'Leider nicht bestanden. Versuch es gleich noch einmal!' }}
+      </h4>
+      <button class="btn btn-lg w-100 fw-bold text-white" style="background-color: #607d9c;" routerLink="/">
+        ZURÜCK ZUM START
+      </button>
+    </div>
+  }
+</div>

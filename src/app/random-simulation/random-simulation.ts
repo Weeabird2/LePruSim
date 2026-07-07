@@ -1,14 +1,14 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, OnDestroy, OnInit } from '@angular/core';
 import { Question } from '../data/question';
 import { ActivatedRoute } from '@angular/router';
 import { Questions } from '../service/questions';
 
 @Component({
-  selector: 'app-exam-simulation',
+  selector: 'app-random-simulation',
   standalone: true,
-  templateUrl: './exam-simulation.html',
+  templateUrl: './random-simulation.html',
 })
-export class ExamSimulation {
+export class RandomSimulation implements OnInit, OnDestroy {
   questions = signal<Question[]>([]);
   currentIndex = signal(0);
   currentQuestion = computed(() => this.questions()[this.currentIndex()]);
@@ -21,6 +21,10 @@ export class ExamSimulation {
   timerInterval: any;
   examId = '';
   topicId = '';
+mode: any;
+selectedCatalog: any;
+catalogs: any;
+topics: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,13 +32,19 @@ export class ExamSimulation {
   ) {}
 
   ngOnInit(): void {
-    const questionCount = 60;
-    this.timeLeft.set(3600);
+    let questionCount = 60;
+
+    this.route.queryParamMap.subscribe(params => {
+      const timeParam = params.get('time');
+      const countParam = params.get('count');
+      if (timeParam) this.timeLeft.set(Number(timeParam) * 60);
+      if (countParam) questionCount = Number(countParam);
+    });
 
     this.route.paramMap.subscribe((params) => {
-      const examId = params.get('examId') ?? '';
+      const catalogId = params.get('catalogId') ?? '';
 
-      this.questionService.getQuestions(examId, '').subscribe({
+      this.questionService.getQuestions(catalogId, '').subscribe({
         next: (q) => {
           const randomSelection = q.sort(() => 0.5 - Math.random()).slice(0, questionCount);
           this.questions.set(randomSelection);
